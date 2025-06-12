@@ -163,20 +163,7 @@ public:
 
 };
 
-Dana jest klasa, której niekompletna deklaracja znajduje się poniżej :
-class Tablica {
-    int *tab;
-    int size;
-public:
-    Tablica (const std::initializerlist<int>& lista)
-        {
-        tab = new int[lista.size()];
-        size = lista.size();
-        int i=0;
-        for(auto el: lista)
-              tab[i++] = el;
-        }
-};
+
 //zadanie3
 Dana jest klasa, której niekompletna deklaracja znajduje się poniżej :
 class Tablica {
