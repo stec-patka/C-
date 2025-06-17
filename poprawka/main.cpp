@@ -81,7 +81,21 @@ T srednia(T* tab, int rozmiar){
     return static_cast<double>(suma)/rozmiar;
 
 }
-
+// KONSTRUKTOR
+//Dana jest klasa, której niekompletna deklaracja znajduje się poniżej :
+//class Tablica {
+  //  int *tab;
+    //int size;
+//public:
+  //  Tablica (const std::initializerlist<int>& lista)
+    //    {
+      //  tab = new int[lista.size()];
+        //size = lista.size();
+        //int i=0;
+        //for(auto el: lista)
+      //        tab[i++] = el;
+       // }
+//};
 //Konstruktor przenoszacy i metoda get_vector()
 //Dopisz do klasy Tablica konstruktor przenoszacy i metode get_vector()
 
@@ -99,9 +113,9 @@ return std::vector<int>(tab, tab+size);
 Tablica& operator=(Tablica&& other) noexcept{
     if(this!= &other){
         delete[] tab_;//zwolni stara pamiec
-        tab_=other.tab_;
+        tab_=other.tab_;//przenies wskaznik
         size_=other.size_;
-        other.tab_=nullptr;
+        other.tab_=nullptr;//zeruj zrodlo
         other.size=0;
     }
     return *this;
