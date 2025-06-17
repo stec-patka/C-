@@ -377,6 +377,186 @@ void serwis(std::vector<double>& vec1, std::vector<double>& vec2){
     }
 }
 
+//4.Napisz klasę wyjątku, która dziedziczy z std::exception. W konstruktorze oprócz napisu wyjątek powinien dostawać i
+//zapamiętywać liczbę całkowitą. Napis i liczba powinny być prywatne,napis ma być zwracany przez metodę what() (tak jak
+//to jest w standardowych wyjątkach), a liczba całkowita przez inną metodę.Napisz funkcję, która otrzymuje dwa vectory liczb
+//typu double i zwraca vector wyników dzielenia liczb z pierwszego wektora przez liczby z drugiego. Jeśli miałoby nastąpić
+//dzielenie przez zero funkcja ma rzucić wyjątek typu zdefiniowanego powyżej z komunikatem "Dzielenie przez zero" oraz z indeksem
+//pozycji, na której to zero wystąpiło.Napisz drugą funkcję, ma nazywać się serwis i ma mieć takie same parametry jak pierwsza,
+//ale nie ma nic zwracać. Ma wywołać pierwszą funkcję i wypisać jej wynik oraz obsłużyć rzucony wyjątek. Obsługa wyjątku ma
+//polegać na wypisaniu komunikatu z obiektu wyjątku oraz pozycji, na której wystąpiło zero (wszystko w tej samej linii).
+class Wyjatek:public std::exception{
+private:
+    std::string komunikat;
+    int num;
+public:
+    Wyjatek(std::string k, int n) : komunikat(k), num(n){}
+
+    const char* what()const noexcept override{
+        return komunikat.c_str();
+    }
+    int liczba()const{
+        return num;
+    }
+};
+
+std::vector<double> dzielenie(std::vector<double>& vec1, std::vector<double>& vec2){
+    std::vector<double> wynik;
+    for(size_t i=0;i<vec1.size();i++){
+        if(vec2[i]==0){
+            throw Wyjatek("dzielenie przez zero", i);
+        }
+        else{
+            wynik.push_back(vec1[i]/vec2[i]);
+        }
+    }
+    return wynik;
+}
+
+void serwis(std::vector<double>& vec1, std::vector<double>& vec2){
+    try{
+        std::vector<double> wynik=dzielenie(vec1,vec2);
+        for (double x : wynik) {
+           std::cout << x << " ";
+       }
+       std::cout << "\n";
+    }
+    catch(const Wyjatek& e){
+        std::cout<<e.what()<<" " <<e.liczba()<<std::endl;
+    }
+}
+
+//5.Napisz własną klasę wyjątków, która ma dziedziczyć z std::exception. W konstruktorze, oprócz napisu, wyjątek powinien
+//dostawać i zapamiętywać liczbę całkowitą. Napis i liczba powinny być prywatne, napis ma być zwracany przez metodę what()
+//(tak jak to jest w standardowych wyjątkach), a liczba całkowita przez inną metodę. Napisz funkcję, która otrzymuje dwa
+//wektory liczb typu double i zwraca wartość iloczynu skalarnego tych wektorów.Jeśli wektory mają różne rozmiary, funkcja
+//ma rzucić wyjątek typu zdefiniowanego powyżej z komunikatem "Różne rozmiary" oraz z indeksem równym długości krótszego
+//z wektorów.Napisz drugą funkcję o nazwie serwis, która ma mieć takie same parametry jak pierwsza, ale nie ma nic zwracać.
+//Ma wywołać pierwszą funkcję, wypisać jej wynik oraz obsłużyć rzucony wyjątek. Obsługa wyjątku ma polegać na wypisaniu
+//komunikatu z obiektu wyjątku oraz liczby całkowitej (indeksu), która została przekazana do wyjątku (wszystko w tej samej linii).
+class Wyjatki:public std::exception{
+private:
+    std::string komunikat;
+    int indeks;
+public:
+    Wyjatki(std::string k, int i): komunikat(k),indeks(i){}
+
+    const char* what()const noexcept override{
+        return komunikat.c_str();
+    }
+    int index()const{
+        return indeks;
+    }
+};
+double iloczyn(std::vector<double>& v1, std::vector<double>& v2){
+    double wynik=0.0;
+    if(v1.size()!=v2.size()){
+        int min_size;
+    if (v1.size() < v2.size()){
+            min_size = v1.size();}
+        else{
+            min_size = v2.size();}
+        throw Wyjatki("rozne rozmiary", min_size);
+    }
+    else{
+        for(size_t i=0;i<v1.size();i++){
+            wynik+=v1[i]*v2[i];
+        }
+    }
+    return wynik;
+}
+void serwis(std::vector<double>& v1, std::vector<double>& v2){
+   try{
+       double wynik=iloczyn(v1,v2);
+       std::cout<<"wynik: "<<wynik<<std::endl;
+   }
+   catch(const Wyjatki& e){
+    std::cout<<e.what()<<" "<<e.index()<<std::endl;
+   }
+}
+
+//6.Napisz własną klasę wyjątków, która ma dziedziczyć z std::exception. W konstruktorze, oprócz napisu wyjątek powinien
+//dostawać i zapamiętywać liczbę całkowitą. Napis i liczba powinny być prywatne, napis ma być zwracany przez metodę what()
+//(tak jak to jest w standardowych wyjątkach), a liczbę całkowitą przez inną metodę. Napisz funkcję, która otrzymuje  vector
+//liczb typu double i zwraca vector pierwiastków tych liczb.Jeśli miałoby nastąpić liczenie pierwiastka z liczby ujemnej
+//funkcja ma rzucić wyjątek typu zdefiniowanego powyżej z komunikatem "Pierwiastek z wartości ujemnej" oraz z indeksem pozycji
+//na której ta wartość wystąpiła. Napisz drugą funkcję, która ma nazywać się serwis i ma mieć taki sam parametr jak pierwsza,
+//ale nie ma nic zwracać. Ma wywołać pierwszą funkcję i wypisać jej wynik oraz obsłużyć  rzucony wyjątek. Obsługa wyjątku ma
+//polegać na wypisaniu komunikatu z obiektu wyjątku oraz pozycji na której wystąpiła wartość ujemna (wszystko w tej samej linii)
+class Mojwyjatek:public std::exception{
+private:
+    std::string komunikat;
+    int indeks;
+public:
+    Mojwyjatek(std::string k, int i):komunikat(k),indeks(i){}
+    const char* what()const noexcept override{
+        return komunikat.c_str();
+    }
+    int index()const{
+        return indeks;
+    }
+};
+std::vector<double> pierwiastki(std::vector<double>& vec){
+    std::vector<double> wynik;
+    for(size_t i=0;i<vec.size();i++){
+        if(vec[i]<0){
+            throw Mojwyjatek("pierwiastek z wartosci ujemnej",i);
+        }
+        else{
+            wynik.push_back(std::sqrt(vec[i]));
+        }
+    }
+    return wynik;
+}
+void serwis(std::vector<double>& vec){
+    try{
+        std::vector<double> wynik= pierwiastki(vec);
+        for(double x : wynik){
+            std::cout<<x<<", ";
+        }
+        std::cout<<std::endl;
+    }
+    catch(const Mojwyjatek& e){
+        std::cout<<e.what()<<", "<<e.index();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
