@@ -27,7 +27,7 @@ private:
 public:
     Stos() : wierzcholek(-1){}
     void push(const T& element){
-        if(top<99){
+        if(wierzcholek<99){
             tab[++wierzcholek]=element;
         }
     }
@@ -300,7 +300,7 @@ private:
     std::string stanowisko;
 public:
     Pracownicy(std::string i, std::string n, std::string s):Osoba(i,n), stanowisko(s){}
-    virtual void wypisz(){
+    void wypisz()override{
         Osoba::wypisz();
     std::cout<<", "<<stanowisko<<std::endl;
     }
@@ -534,49 +534,3 @@ void serwis(std::vector<double>& vec){
         std::cout<<e.what()<<", "<<e.index();
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
